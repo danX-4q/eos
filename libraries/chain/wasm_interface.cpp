@@ -1363,6 +1363,17 @@ class context_free_transaction_api : public context_aware_api {
       }
 };
 
+class safechain_api : public context_aware_api {
+   public:
+      safechain_api( apply_context& ctx )
+      :context_aware_api(ctx,true){}
+
+      int64_t get_txid_confirmations(array_ptr<const char> txid, size_t txid_len)
+      {
+         return (3344);
+      }
+};
+
 class compiler_builtins : public context_aware_api {
    public:
       compiler_builtins( apply_context& ctx )
@@ -1819,6 +1830,10 @@ REGISTER_INTRINSICS(transaction_api,
    (send_context_free_inline,  void(int, int)               )
    (send_deferred,             void(int, int64_t, int, int, int32_t) )
    (cancel_deferred,           int(int)                     )
+);
+
+REGISTER_INTRINSICS(safechain_api,
+   (get_txid_confirmations,    uint64_t(int, int)           )
 );
 
 REGISTER_INTRINSICS(context_free_api,
