@@ -1368,9 +1368,10 @@ class safechain_api : public context_aware_api {
       safechain_api( apply_context& ctx )
       :context_aware_api(ctx,true){}
 
-      int64_t get_txid_confirmations(array_ptr<const char> txid, size_t txid_len)
+      int get_txid_confirmations(array_ptr<const char> txid, size_t txid_len, uint64_t& cfrms)
       {
-         return (3344);
+         cfrms = 3344;
+         return (0);
       }
 };
 
@@ -1833,7 +1834,7 @@ REGISTER_INTRINSICS(transaction_api,
 );
 
 REGISTER_INTRINSICS(safechain_api,
-   (get_txid_confirmations,    uint64_t(int, int)           )
+   (get_txid_confirmations,    int(int, int, int)           )
 );
 
 REGISTER_INTRINSICS(context_free_api,

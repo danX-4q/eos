@@ -37,10 +37,19 @@ extern "C" {
     *  Example:
     *
     *  @code
-    *  int64_t confirmations = get_txid_confirmations("819ee164a9a6990de28089a76df30ee04e0f3c551df4990c24a5d1a822a978b4", 64);
+    *  uint64_t confirmations = 0
+    *  int ret = get_txid_confirmations(
+    *                "819ee164a9a6990de28089a76df30ee04e0f3c551df4990c24a5d1a822a978b4", 
+    *                64, confirmations);
+    *  if(ret) {
+    *    //success, and `confirmations` is meaningful
+    *  }
+    *  else {
+    *    //failed, and `confirmations` is not meaningful
+    *  }
     *  @endcode
     */
-   int64_t get_txid_confirmations(const char* txid, uint32_t txid_len);
+   int get_txid_confirmations(const char* txid, uint32_t txid_len, uint64_t& cfrms);
 
 
    /// @}
