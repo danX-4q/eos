@@ -2246,4 +2246,9 @@ safechain_client_plugin* controller::get_safechain_client() const {
    return safechain;
 }
 
+int controller::get_txid_confirmations(const string txid, uint64_t& cfrms) {
+   cfrms = 334455;
+   return ( 0 );
+}
+
 } } /// eosio::chain

@@ -299,6 +299,8 @@ namespace eosio { namespace chain {
          safechain_client_plugin* get_safechain_client();
          safechain_client_plugin* get_safechain_client() const;
 
+         int get_txid_confirmations(const string txid, uint64_t& cfrms);
+
       private:
          friend class apply_context;
          friend class transaction_context;

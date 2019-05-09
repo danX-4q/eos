@@ -1370,8 +1370,8 @@ class safechain_api : public context_aware_api {
 
       int get_txid_confirmations(array_ptr<const char> txid, size_t txid_len, uint64_t& cfrms)
       {
-         cfrms = 3344;
-         return (0);
+         auto ret = context.control.get_txid_confirmations(txid.value, cfrms);
+         return ( ret );
       }
 };
 
