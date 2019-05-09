@@ -10,25 +10,21 @@ namespace eosio {
    using namespace appbase;
    using fc::http_client;
 
-   class http_client_plugin : public appbase::plugin<http_client_plugin>
+   class safechain_client_plugin : public appbase::plugin<safechain_client_plugin>
    {
       public:
-        http_client_plugin();
-        virtual ~http_client_plugin();
+        safechain_client_plugin();
+        virtual ~safechain_client_plugin();
 
-        APPBASE_PLUGIN_REQUIRES()
+        APPBASE_PLUGIN_REQUIRES((chain_plugin))
         virtual void set_program_options(options_description&, options_description& cfg) override;
 
         void plugin_initialize(const variables_map& options);
         void plugin_startup();
         void plugin_shutdown();
 
-        http_client& get_client() {
-           return *my;
-        }
-
       private:
-        std::unique_ptr<http_client> my;
+        std::unique_ptr<class safechain_client_plugin_impl> my;
    };
 
 }

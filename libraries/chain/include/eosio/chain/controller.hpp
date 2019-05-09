@@ -15,6 +15,10 @@ namespace boost { namespace asio {
    class thread_pool;
 }}
 
+namespace eosio {
+   class safechain_client_plugin;
+}
+
 namespace eosio { namespace chain {
 
    class authorization_manager;
@@ -291,11 +295,16 @@ namespace eosio { namespace chain {
             return pretty_output;
          }
 
+         void set_safechain_client(safechain_client_plugin* ptr);
+         safechain_client_plugin* get_safechain_client();
+         safechain_client_plugin* get_safechain_client() const;
+
       private:
          friend class apply_context;
          friend class transaction_context;
 
          chainbase::database& mutable_db()const;
+         safechain_client_plugin*         safechain;
 
          std::unique_ptr<controller_impl> my;
 

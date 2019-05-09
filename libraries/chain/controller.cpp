@@ -2234,4 +2234,16 @@ const flat_set<account_name> &controller::get_resource_greylist() const {
    return  my->conf.resource_greylist;
 }
 
+void controller::set_safechain_client(safechain_client_plugin* ptr) {
+   safechain = ptr;
+}
+
+safechain_client_plugin* controller::get_safechain_client() {
+   return safechain;
+}
+
+safechain_client_plugin* controller::get_safechain_client() const {
+   return safechain;
+}
+
 } } /// eosio::chain
