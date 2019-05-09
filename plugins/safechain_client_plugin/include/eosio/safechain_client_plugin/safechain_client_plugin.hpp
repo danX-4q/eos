@@ -4,6 +4,7 @@
  */
 #pragma once
 #include <appbase/application.hpp>
+#include <eosio/chain_plugin/chain_plugin.hpp>
 #include <fc/network/http/http_client.hpp>
 
 namespace eosio {

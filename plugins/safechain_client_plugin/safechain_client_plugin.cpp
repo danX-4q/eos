@@ -3,8 +3,6 @@
  *  @copyright defined in eos/LICENSE
  */
 #include <eosio/safechain_client_plugin/safechain_client_plugin.hpp>
-#include <eosio/chain_plugin/chain_plugin.hpp>
-
 #include <eosio/chain/exceptions.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <fstream>
@@ -36,7 +34,7 @@ namespace eosio {
 
    safechain_client_plugin::safechain_client_plugin():
       my( new safechain_client_plugin_impl ) {
-      my_impl = my.get();   
+      my_impl = my.get();
    }
    safechain_client_plugin::~safechain_client_plugin(){}
 
