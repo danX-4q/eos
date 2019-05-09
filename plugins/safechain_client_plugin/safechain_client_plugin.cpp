@@ -8,6 +8,7 @@
 #include <fstream>
 
 namespace eosio {
+   static appbase::abstract_plugin& _plugin = app().register_plugin<safechain_client_plugin>();
 
    class safechain_client_plugin_impl {
       public:
@@ -54,8 +55,9 @@ namespace eosio {
          my->rpc_address = options.at( "safed-rpc-server-address" ).as<string>();
          my->rpc_user = options.at( "safed-rpc-user" ).as<string>();
          my->rpc_password = options.at( "safed-rpc-password" ).as<string>();
-         idump((my->rpc_address)(my->rpc_user)(my->rpc_password));
-         
+         ilog("safed rpc: address=${a}, user=${u}, password=${p}",
+               ("a",my->rpc_address)("u",my->rpc_user)("p",my->rpc_password));
+
       } FC_LOG_AND_RETHROW()
    }
 
