@@ -52,11 +52,11 @@ namespace eosio { namespace chain {
          ++count;
          if ( count == my->conf.mock_before_dynamic_failed_retry ) {
             count = 0;
-            ilog( "mbdf return 3" );
-            return ( 3 );
-         } else {
-            ilog( "mbdfr return 0" );
+            ilog( "mbdf return 0" );
             return ( 0 );
+         } else {
+            ilog( "mbdf return 3, count = ${c}", ( "c", count ) );
+            return ( 3 );
          }
       }
       
