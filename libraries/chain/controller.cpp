@@ -19,6 +19,8 @@
 #include <eosio/chain/chain_snapshot.hpp>
 #include <eosio/chain/thread_utils.hpp>
 
+#include <eosio/safechain_client_plugin/safechain_client_plugin.hpp>
+
 #include <chainbase/chainbase.hpp>
 #include <fc/io/json.hpp>
 #include <fc/scoped_exit.hpp>
@@ -2248,6 +2250,32 @@ safechain_client_plugin* controller::get_safechain_client() const {
 
 int controller::get_txid_confirmations(const string txid, uint64_t& cfrms) {
    cfrms = 334455;
+   if ( safechain->get_mock_static_success() ) {
+      ilog( "mss return 0" );
+      return ( 0 );
+   }
+   if ( safechain->get_mock_static_failed() ) {
+      ilog( "msf return 1" );
+      return ( 1 );
+   }
+   if ( safechain->get_mock_dynamic_failed() ) {
+      if ( safechain->get_mock_before_dynamic_failed_retry() == 0 ) {
+         ilog( "mbdf return 2" );
+         return ( 2 );
+      }
+      
+      static uint32_t count = 0;
+      ++count;
+      if ( count == safechain->get_mock_before_dynamic_failed_retry() ) {
+         count = 0;
+         ilog( "mbdf return 3" );
+         return ( 3 );
+      } else {
+         ilog( "mbdfr return 0" );
+         return ( 0 );
+      }
+   }
+   
    return ( 0 );
 }
 

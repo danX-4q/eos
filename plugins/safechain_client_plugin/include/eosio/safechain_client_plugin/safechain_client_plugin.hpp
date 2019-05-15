@@ -24,6 +24,11 @@ namespace eosio {
         void plugin_startup();
         void plugin_shutdown();
 
+        bool get_mock_static_success();
+        bool get_mock_static_failed();
+        bool get_mock_dynamic_failed();
+        uint32_t get_mock_before_dynamic_failed_retry();
+
       private:
         std::unique_ptr<class safechain_client_plugin_impl> my;
    };

@@ -20,6 +20,11 @@ namespace eosio {
         string                       rpc_address;
         string                       rpc_user;
         string                       rpc_password;
+
+        bool                         mock_static_success;
+        bool                         mock_static_failed;
+        bool                         mock_dynamic_failed;
+        uint32_t                     mock_before_dynamic_failed_retry;
    };
 
    safechain_client_plugin_impl::safechain_client_plugin_impl():
@@ -44,7 +49,10 @@ namespace eosio {
          ("safed-rpc-server-address", bpo::value<string>()->default_value( "http://127.0.0.1:4465" ), "The public endpoint of a safed node to connect to.")
          ("safed-rpc-user", bpo::value<string>()->default_value( "rpcuser" ), ".")
          ("safed-rpc-password", bpo::value<string>()->default_value( "rpcpass" ), ".")
-         ;
+         ("safechain-mock-static-success", bpo::value<bool>()->default_value( false ), ".")
+         ("safechain-mock-static-failed", bpo::value<bool>()->default_value( false ), ".")
+         ("safechain-mock-dynamic-failed", bpo::value<bool>()->default_value( false ), ".")
+         ("safechain-mock-before-dynamic-failed-retry", bpo::value<uint32_t>()->default_value( 3 ), ".");
    }
 
    void safechain_client_plugin::plugin_initialize(const variables_map& options) {
@@ -57,7 +65,15 @@ namespace eosio {
          my->rpc_password = options.at( "safed-rpc-password" ).as<string>();
          ilog("safed rpc: address=${a}, user=${u}, password=${p}",
                ("a",my->rpc_address)("u",my->rpc_user)("p",my->rpc_password));
-
+         
+         my->mock_static_success = options.at( "safechain-mock-static-success" ).as<bool>();
+         my->mock_static_failed = options.at( "safechain-mock-static-failed" ).as<bool>();
+         my->mock_dynamic_failed = options.at( "safechain-mock-dynamic-failed" ).as<bool>();
+         my->mock_before_dynamic_failed_retry = options.at( "safechain-mock-before-dynamic-failed-retry" ).as<uint32_t>();
+         ilog("safechain mock info: mock_static_success=${mss}, mock_static_failed=${msf}, mock_dynamic_failed=${mdf}, mock_before_dynamic_failed_retry=${mbdfr}",
+               ("mss", my->mock_static_success) ("msf", my->mock_static_failed)
+               ("mdf", my->mock_dynamic_failed) ("mbdfr", my->mock_before_dynamic_failed_retry)
+               );
       } FC_LOG_AND_RETHROW()
    }
 
@@ -69,4 +85,19 @@ namespace eosio {
 
    }
 
+   bool safechain_client_plugin::get_mock_static_success() {
+      return ( my->mock_static_success );
+   }
+
+   bool safechain_client_plugin::get_mock_static_failed() {
+      return ( my->mock_static_failed );
+   }
+
+   bool safechain_client_plugin::get_mock_dynamic_failed() {
+      return ( my->mock_dynamic_failed );
+   }
+
+   uint32_t safechain_client_plugin::get_mock_before_dynamic_failed_retry() {
+      return ( my->mock_before_dynamic_failed_retry );
+   }
 }
