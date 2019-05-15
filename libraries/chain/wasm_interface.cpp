@@ -1,6 +1,8 @@
 #include <eosio/chain/wasm_interface.hpp>
 #include <eosio/chain/apply_context.hpp>
 #include <eosio/chain/controller.hpp>
+#include <eosio/chain/safechain_client.hpp>
+
 #include <eosio/chain/transaction_context.hpp>
 #include <eosio/chain/producer_schedule.hpp>
 #include <eosio/chain/exceptions.hpp>
@@ -1370,7 +1372,8 @@ class safechain_api : public context_aware_api {
 
       int get_txid_confirmations(array_ptr<const char> txid, size_t txid_len, uint64_t& cfrms)
       {
-         auto ret = context.control.get_txid_confirmations(txid.value, cfrms);
+         auto ret = context.control.safechain_client_instance()
+                        ->get_txid_confirmations(txid.value, cfrms);
          return ( ret );
       }
 };

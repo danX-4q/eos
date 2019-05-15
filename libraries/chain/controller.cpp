@@ -19,7 +19,7 @@
 #include <eosio/chain/chain_snapshot.hpp>
 #include <eosio/chain/thread_utils.hpp>
 
-#include <eosio/safechain_client_plugin/safechain_client_plugin.hpp>
+#include <eosio/chain/safechain_client.hpp>
 
 #include <chainbase/chainbase.hpp>
 #include <fc/io/json.hpp>
@@ -1719,7 +1719,8 @@ authorization_manager&         controller::get_mutable_authorization_manager()
 }
 
 controller::controller( const controller::config& cfg )
-:my( new controller_impl( cfg, *this ) )
+:my( new controller_impl( cfg, *this ) ),
+ safechain( new safechain_client )
 {
 }
 
@@ -2236,47 +2237,8 @@ const flat_set<account_name> &controller::get_resource_greylist() const {
    return  my->conf.resource_greylist;
 }
 
-void controller::set_safechain_client(safechain_client_plugin* ptr) {
-   safechain = ptr;
-}
-
-safechain_client_plugin* controller::get_safechain_client() {
+std::shared_ptr<safechain_client> controller::safechain_client_instance() {
    return safechain;
-}
-
-safechain_client_plugin* controller::get_safechain_client() const {
-   return safechain;
-}
-
-int controller::get_txid_confirmations(const string txid, uint64_t& cfrms) {
-   cfrms = 334455;
-   if ( safechain->get_mock_static_success() ) {
-      ilog( "mss return 0" );
-      return ( 0 );
-   }
-   if ( safechain->get_mock_static_failed() ) {
-      ilog( "msf return 1" );
-      return ( 1 );
-   }
-   if ( safechain->get_mock_dynamic_failed() ) {
-      if ( safechain->get_mock_before_dynamic_failed_retry() == 0 ) {
-         ilog( "mbdf return 2" );
-         return ( 2 );
-      }
-      
-      static uint32_t count = 0;
-      ++count;
-      if ( count == safechain->get_mock_before_dynamic_failed_retry() ) {
-         count = 0;
-         ilog( "mbdf return 3" );
-         return ( 3 );
-      } else {
-         ilog( "mbdfr return 0" );
-         return ( 0 );
-      }
-   }
-   
-   return ( 0 );
 }
 
 } } /// eosio::chain
